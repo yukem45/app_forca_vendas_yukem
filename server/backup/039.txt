@@ -1,0 +1,37 @@
+procedure TServerMethodDM.DWServerEvents1EventsGenericoReplyEvent(
+  var Params: TDWParams; var Result: String);
+var  qry : TZQuery;
+  JSONVALUE : TJSONValue;
+  s : string;
+begin
+  JSONVALUE := TJSONValue.Create;
+  try
+     s := DecodeStrings(Params.ItemsString['pSelect'].AsString, csUndefined);
+     //http://192.168.0.105:8082/Generico?pSelect=c2VsZWN0ICogZnJvbSBjYXRlZ29yaWE=&dwaccesstag=UVZGREVTT0tIMTAwSFhB
+     if s <> '' then
+     begin
+     qry := TZQuery.Create( nil );
+     qry.Connection := ZConnection1;
+     try
+        qry.sql.clear;
+        qry.sql.add(s);
+
+        qry.Open();
+
+        if not qry.isEmpty then
+          begin
+             JSONVALUE.LoadFromDataset('', qry, False, jmPureJSON);
+             Result := JSONVALUE.ToJson;
+          end
+        else
+        Result := 'erro';
+     finally
+       qry.Close;
+       FreeAndNil( qry );
+       end;
+     end;
+  finally
+      FreeAndNil( JSONVALUE );
+  end;
+
+end;

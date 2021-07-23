@@ -1,0 +1,164 @@
+object ServerMethodDM: TServerMethodDM
+  OnCreate = ServerMethodDataModuleCreate
+  OldCreateOrder = False
+  Encoding = esUtf8
+  OnWelcomeMessage = DataModuleWelcomeMessage
+  Height = 251
+  HorizontalOffset = 879
+  VerticalOffset = 467
+  Width = 437
+  PPI = 96
+  object RESTDWPoolerDB1: TRESTDWPoolerDB
+    Compression = True
+    Encoding = esUtf8
+    StrsTrim = False
+    StrsEmpty2Null = False
+    StrsTrim2Len = True
+    Active = True
+    PoolerOffMessage = 'RESTPooler not active.'
+    ParamCreate = True
+    left = 64
+    top = 168
+  end
+  object DWServerEvents1: TDWServerEvents
+    IgnoreInvalidParams = False
+    Events = <    
+      item
+        Routes = [crAll]
+        DWParams = <>
+        JsonMode = jmPureJSON
+        Name = 'Status'
+        OnReplyEvent = DWServerEvents1EventsStatusReplyEvent
+      end    
+      item
+        Routes = [crAll]
+        DWParams = <        
+          item
+            TypeObject = toParam
+            ObjectDirection = odINOUT
+            ObjectValue = ovString
+            ParamName = 'user'
+            Encoded = True
+          end        
+          item
+            TypeObject = toParam
+            ObjectDirection = odINOUT
+            ObjectValue = ovString
+            ParamName = 'pwd'
+            Encoded = True
+          end>
+        JsonMode = jmPureJSON
+        Name = 'Login'
+        OnReplyEvent = DWServerEvents1EventsLoginReplyEvent
+      end    
+      item
+        Routes = [crAll]
+        DWParams = <        
+          item
+            TypeObject = toParam
+            ObjectDirection = odINOUT
+            ObjectValue = ovString
+            ParamName = 'pSelect'
+            Encoded = True
+          end>
+        JsonMode = jmPureJSON
+        Name = 'Generico'
+        OnReplyEvent = DWServerEvents1EventsGenericoReplyEvent
+      end    
+      item
+        Routes = [crAll]
+        DWParams = <        
+          item
+            TypeObject = toParam
+            ObjectDirection = odINOUT
+            ObjectValue = ovString
+            ParamName = 'pHeader'
+            Encoded = True
+          end        
+          item
+            TypeObject = toParam
+            ObjectDirection = odINOUT
+            ObjectValue = ovString
+            ParamName = 'pItem'
+            Encoded = True
+          end>
+        JsonMode = jmPureJSON
+        Name = 'Gravar'
+        OnReplyEvent = DWServerEvents1EventsGravarReplyEvent
+      end    
+      item
+        Routes = [crAll]
+        DWParams = <        
+          item
+            TypeObject = toParam
+            ObjectDirection = odINOUT
+            ObjectValue = ovString
+            ParamName = 'pSelect'
+            Encoded = True
+          end>
+        JsonMode = jmPureJSON
+        Name = 'Clientes'
+        OnReplyEvent = DWServerEvents1EventsClientesReplyEvent
+      end    
+      item
+        Routes = [crAll]
+        DWParams = <        
+          item
+            TypeObject = toParam
+            ObjectDirection = odINOUT
+            ObjectValue = ovString
+            ParamName = 'pHeader'
+            Encoded = True
+          end        
+          item
+            TypeObject = toParam
+            ObjectDirection = odINOUT
+            ObjectValue = ovString
+            ParamName = 'pItens'
+            Encoded = True
+          end>
+        JsonMode = jmPureJSON
+        Name = 'GravaVendas'
+        OnReplyEvent = DWServerEvents1EventsGravaVendasReplyEvent
+      end>
+    AccessTag = 'QVFDESOKH100HXA'
+    left = 192
+    top = 104
+  end
+  object DWServerContext1: TDWServerContext
+    IgnoreInvalidParams = False
+    ContextList = <>
+    RootContext = 'webpascal'
+    left = 192
+    top = 168
+  end
+  object ZConnection1: TZConnection
+    ControlsCodePage = cCP_UTF8
+    AutoEncodeStrings = True
+    ClientCodepage = 'ISO8859_9'
+    Properties.Strings = (
+      'controls_cp=CP_UTF8'
+      'AutoEncodeStrings=ON'
+      'codepage=ISO8859_9'
+    )
+    BeforeConnect = ZConnection1BeforeConnect
+    HostName = 'localhost'
+    Port = 3050
+    Protocol = 'firebird-2.5'
+    left = 64
+    top = 40
+  end
+  object ZQuery1: TZQuery
+    Connection = ZConnection1
+    Params = <>
+    left = 192
+    top = 40
+  end
+  object RESTDWDriverZeos1: TRESTDWDriverZeos
+    DatabaseCharSet = csUndefined
+    CommitRecords = 100
+    Connection = ZConnection1
+    left = 64
+    top = 104
+  end
+end
